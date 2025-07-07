@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Detection</title>
+    <style>
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #166088;
+    --accent-color: #4fc3f7;
+    --dark-color: #2c3e50;
+    --light-color: #f5f7fa;
+    --text-color: #333;
+    --light-text: #666;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --blue-frame: rgb(31, 13, 170);
+    --dark-blue: rgb(26, 19, 96);
+    --welcome-blue: #0d47a1;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('https://static.bangkokhospital.com/uploads/2024/07/%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B9%80%E0%B8%9B%E0%B8%B4%E0%B8%94-AI-MAMMOGRAPHY-%E0%B9%80%E0%B8%9E%E0%B8%B4%E0%B9%88%E0%B8%A1%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%A1%E0%B8%B0%E0%B9%80%E0%B8%A3%E0%B9%87%E0%B8%87%E0%B9%80%E0%B8%95%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%A1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.hospital-header {
+    align-self: flex-start;
+    margin: 20px 0 0 30px;
+}
+
+.hospital-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.opticare {
+    color: white;
+}
+
+.hospital {
+    color: var(--primary-color);
+}
+
+.welcome-section {
+    text-align: center;
+    margin: 20px 0 30px;
+    padding: 20px;
+    position: relative;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    color: var(--welcome-blue);
+    margin: 0;
+    padding: 15px 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: inline-block;
+    border: 3px solid var(--welcome-blue); /* إضافة إطار أزرق غامق */
+    border-radius: 10px; /* زوايا مدورة للإطار */
+    background-color: rgba(255, 255, 255, 0.8); /* خلفية شبه شفافة */
+    box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3); /* ظل للإطار */
+}
+
+.welcome-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    border-radius: 3px;
+    background: rgba(13, 71, 161, 0.3);
+    border-radius: 8px;
+    border: 2px solid var(--welcome-blue);
+}
+
+.welcome-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 25px;
+    font-weight: 300;
+}
+
+/* باقي الكود كما هو بدون تغيير */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 40px;
+    border-top: 5px solid var(--accent-color);
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid rgba(74, 111, 165, 0.3);
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(74, 111, 165, 0.6);
+}
+
+h1 {
+    text-align: center;
+    color: var(--welcome-blue);
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--dark-color);
+    text-align: left;
+}
+
+input, select, textarea {
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    border: 1px solid #e1e5eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(22, 96, 136, 0.2);
+    background: #fff;
+}
+
+button {
+    background-color: rgb(47, 17, 180);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #0d47a1 0%, #166088 100%);
+    box-shadow: 0 6px 20px rgba(22, 96, 136, 0.4);
+    transform: translateY(-2px);
+}
+
+::placeholder {
+    color: #adb5bd;
+    opacity: 1;
+}
+
+.medical-icon {
+    color: var(--accent-color);
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.patient-info-title {
+    color: var(--welcome-blue); /* استخدام اللون الأزرق الغامق */
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.blood-test-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.blood-test-section h2 {
+    color: var(--welcome-blue); /* استخدام اللون الأزرق الغامق */
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.form-col {
+    flex: 1;
+    padding: 0 10px;
+    min-width: 150px;
+}
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hospital Header -->
+    <div class="hospital-header">
+        <h1 class="hospital-title">
+            <span class="opticare">Opticare</span><span class="hospital">hospital</span>
+        </h1>
+    </div>
+    
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <h1 class="welcome-title">Welcome to breast cancer Clinic</h1>
+        <p class="welcome-subtitle"> Breast cancer Diagnosis & Treatment</p>
+    </div>
+    </div>
+    
+    <!-- Main Form Container -->
+    <div class="container">
+        <h1>Patient Information</h1>
+        <form method="POST" enctype="multipart/form-data">
+            
+            <label for="name"><span class="medical-icon">👤</span>Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter full name" required>
+
+            <label for="national_id"><span class="medical-icon">🆔</span>National ID:</label>
+            <input type="text" id="national_id" name="national_id" placeholder="Enter national ID" required>
+
+            <label for="nationality"><span class="medical-icon">🌎</span>Nationality:</label>
+            <input type="text" id="nationality" name="nationality" placeholder="Enter nationality" required>
+
+            <label for="age"><span class="medical-icon">🎂</span>Age:</label>
+            <input type="number" id="age" name="age" placeholder="Enter age" required>
+
+            <label for="mobile_number"><span class="medical-icon">📱</span>Mobile Number:</label>
+            <input type="text" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" required>
+
+            <label for="gender"><span class="medical-icon">🚻</span>Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select>
+
+            <label for="family_history"><span class="medical-icon">👪</span>Family History of Breast Cancer:</label>
+            <input type="text" id="family_history" name="family_history" placeholder="e.g., mother, sister, none" required>
+
+            <label for="menopause_status"><span class="medical-icon">🔄</span>Menopause Status:</label>
+            <select id="menopause_status" name="menopause_status" required>
+                <option value="" disabled selected>Select status</option>
+                <option value="Pre-Menopause">Pre-Menopause</option>
+                <option value="Post-Menopause">Post-Menopause</option>
+            </select>
+
+            <label for="hormone_use"><span class="medical-icon">💊</span>Hormone Use (HRT/Birth Control):</label>
+            <select id="hormone_use" name="hormone_use" required>
+                <option value="" disabled selected>Select option</option>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <label for="pregnancies"><span class="medical-icon">🤰</span>Number of Pregnancies:</label>
+            <input type="number" id="pregnancies" name="pregnancies" min="0" placeholder="Enter number of pregnancies" required>
+
+            <label for="weight"><span class="medical-icon">⚖️</span>Weight (kg):</label>
+            <input type="number" id="weight" name="weight" step="0.1" min="0" placeholder="Enter weight in kg" required>
+
+            <label for="height"><span class="medical-icon">📏</span>Height (cm):</label>
+            <input type="number" id="height" name="height" step="0.1" min="0" placeholder="Enter height in cm" required>
+
+            <label for="image"><span class="medical-icon">📷</span>Upload Breast Scan Image (Mammogram/Ultrasound):</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <button type="submit">Submit for Detection</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Detection Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color:rgb(24, 46, 216);
+            text-align: center;
+        }
+        .report {
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .visualization {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .visualization img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .disease-info {
+            background-color: #fce4ec;
+            border-left: 6px solid rgb(24, 46, 216);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .disease-info h3 {
+            margin-top: 0;
+            color: rgb(24, 46, 216);
+        }
+        .size-info {
+            background-color: #e3f2fd;
+            border-left: 6px solidrgb(231, 233, 235);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .size-info h3 {
+            margin-top: 0;
+            color: #0d47a1;
+        }
+        .diagrams {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .diagram {
+            flex: 1 1 300px;
+            text-align: center;
+        }
+        .diagram img {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: rgb(24, 46, 216);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .download-btn:hover {
+            background-color: rgb(24, 46, 216);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Breast Cancer Detection Result</h1>
+        
+<div class="disease-info" style="background-color: #e6f7ff; border-left: 6px solid rgb(24, 46, 216); padding: 10px; margin: 10px 0; border-radius: 4px;">
+    {% if disease_info %}
+    <h3>Detailed Breast Cancer Information</h3>
+    <p><strong>Type:</strong> {{ disease_info['type'] }}</p>
+    <p><strong>Description:</strong> {{ disease_info['description'] }}</p>
+    <p><strong>Recommended Treatment:</strong> {{ disease_info['treatment'] }}</p>
+    {% endif %}
+</div>
+
+        <div class="size-info">
+            <h3>Tumor Size Analysis</h3>
+            <p><strong>Size:</strong> {{ "%.1f"|format(disease_info['size']) }} mm</p>
+            <p><strong>Area:</strong> {{ "%.1f"|format(disease_info['area']) }} mm²</p>
+            <p><strong>Size Category:</strong> {{ disease_info['size_category'] }}</p>
+            <p><strong>Malignancy Probability:</strong> {{ "%.1f"|format(disease_info['malignancy_prob']) }}%</p>
+        </div>
+        
+        <div class="report">
+            {{ report }}
+        </div>
+
+        <div class="visualization">
+            <h2>Breast Scan Analysis</h2>
+            <img src="{{ url_for('static', filename='visualization.png') }}" alt="Breast Scan Analysis">
+        </div>
+
+        <div class="diagrams">
+            <h2 style="width: 100%; text-align: center;">Risk Factor Analysis</h2>
+            {% for diagram in diagrams %}
+                <div class="diagram">
+                    <img src="{{ url_for('static', filename=diagram.split('/')[-1]) }}" alt="Risk Analysis Diagram">
+                </div>
+            {% endfor %}
+        </div>
+
+        <form action="{{ url_for('download_pdf') }}" method="POST" style="margin-top: 20px; text-align: center;">
+            <input type="hidden" name="report" value="{{ report }}">
+            <input type="hidden" name="visualization" value="{{ visualization }}">
+            <input type="hidden" name="age" value="{{ age }}">
+            <input type="hidden" name="gender" value="{{ gender }}">
+            <input type="hidden" name="family_history" value="{{ family_history }}">
+            <input type="hidden" name="menopause_status" value="{{ menopause_status }}">
+            <button type="submit" class="download-btn">Download Report as PDF</button>
+        </form>
+    </div>
+</body>
+</html>
